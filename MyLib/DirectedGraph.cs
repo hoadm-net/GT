@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MyLib
 {
-    public class Graph
+    public class DirectedGraph
     {
         private LinkedList<int> _nodes;
         private Dictionary<int, LinkedList<int>> _adj;
 
-        public Graph()
+        public DirectedGraph()
         {
             _nodes = new LinkedList<int>();
             _adj = new Dictionary<int, LinkedList<int>>();
@@ -30,7 +30,8 @@ namespace MyLib
 
         public void AddNodes(int nodes)
         {
-            for (int i = 1; i <= nodes; i++) {
+            for (int i = 1; i <= nodes; i++)
+            {
                 _nodes.AddLast(i);
                 _adj[i] = new LinkedList<int>();
             }
@@ -39,7 +40,6 @@ namespace MyLib
         public void AddEdge(int u, int v)
         {
             _adj[u].AddLast(v);
-            _adj[v].AddLast(u);
         }
 
         public int[,] GetAdjMatrix()
@@ -48,7 +48,7 @@ namespace MyLib
 
             for (int i = 1; i <= Count; i++)
             {
-                foreach(int node in _adj[i])
+                foreach (int node in _adj[i])
                 {
                     matrix[i - 1, node - 1] = 1;
                 }
@@ -62,8 +62,8 @@ namespace MyLib
             LinkedList<int>[] ajdList = new LinkedList<int>[Count];
             for (int i = 1; i <= Count; i++)
             {
-                ajdList[i-1] = new LinkedList<int>();
-                ajdList[i-1] = _adj[i];
+                ajdList[i - 1] = new LinkedList<int>();
+                ajdList[i - 1] = _adj[i];
             }
 
             return ajdList;
@@ -77,10 +77,7 @@ namespace MyLib
             {
                 foreach (int node in _adj[i])
                 {
-                    if (node > i)
-                    {
-                        edges.AddLast(new Edge(i, node));
-                    }
+                    edges.AddLast(new Edge(i, node));
                 }
             }
 
@@ -124,7 +121,7 @@ namespace MyLib
             }
         }
 
-        public static Graph LoadFromAdjacencyMatrixFile(string path)
+        public static DirectedGraph LoadFromAdjacencyMatrixFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -132,18 +129,18 @@ namespace MyLib
             }
             string[] lines = File.ReadAllLines(path);
 
-            Graph graph = new Graph();
+            DirectedGraph graph = new DirectedGraph();
             int nodes = int.Parse(lines[0]);
             graph.AddNodes(nodes);
 
             for (int i = 1; i <= nodes; i++)
             {
                 string[] values = lines[i].Split();
-                for (int j = i; j < nodes; j++)
+                for (int j = 0; j < nodes; j++)
                 {
                     if (int.Parse(values[j]) == 1)
                     {
-                        graph.AddEdge(i, j+1);
+                        graph.AddEdge(i, j + 1);
                     }
                 }
             }
@@ -151,7 +148,7 @@ namespace MyLib
             return graph;
         }
 
-        public static Graph LoadFromAdjacencyListFile(string path)
+        public static DirectedGraph LoadFromAdjacencyListFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -159,7 +156,7 @@ namespace MyLib
             }
 
             string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
+            DirectedGraph graph = new DirectedGraph();
 
             int nodes = int.Parse(lines[0]);
             graph.AddNodes(nodes);
@@ -172,19 +169,15 @@ namespace MyLib
                 }
 
                 string[] values = lines[i].Split();
-                foreach(string v in values)
+                foreach (string v in values)
                 {
-                    int vv = int.Parse(v);
-                    if (vv > i)
-                    {
-                        graph.AddEdge(i, vv);
-                    }
+                    graph.AddEdge(i, int.Parse(v));
                 }
             }
             return graph;
         }
 
-        public static Graph LoadFromEdgeListFile(string path)
+        public static DirectedGraph LoadFromEdgeListFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -192,7 +185,7 @@ namespace MyLib
             }
 
             string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
+            DirectedGraph graph = new DirectedGraph();
 
             string[] args = lines[0].Split();
             int nodes = int.Parse(args[0]);

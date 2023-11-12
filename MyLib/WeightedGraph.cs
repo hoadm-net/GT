@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace MyLib
 {
-    public class Graph
+    public class WeightedGraph
     {
         private LinkedList<int> _nodes;
-        private Dictionary<int, LinkedList<int>> _adj;
+        private Dictionary<int, LinkedList<Tuple<int, int>>> _adj;
 
-        public Graph()
+        public WeightedGraph()
         {
             _nodes = new LinkedList<int>();
-            _adj = new Dictionary<int, LinkedList<int>>();
+            _adj = new Dictionary<int, LinkedList<Tuple<int, int>>>();
         }
 
         public LinkedList<int> Nodes
@@ -30,16 +30,17 @@ namespace MyLib
 
         public void AddNodes(int nodes)
         {
-            for (int i = 1; i <= nodes; i++) {
+            for (int i = 1; i <= nodes; i++)
+            {
                 _nodes.AddLast(i);
-                _adj[i] = new LinkedList<int>();
+                _adj[i] = new LinkedList<Tuple<int, int>>();
             }
         }
 
-        public void AddEdge(int u, int v)
+        public void AddEdge(int u, int v, int w)
         {
-            _adj[u].AddLast(v);
-            _adj[v].AddLast(u);
+            _adj[u].AddLast(new Tuple<int, int>(v, w));
+            _adj[v].AddLast(new Tuple<int, int>(u, w));
         }
 
         public int[,] GetAdjMatrix()
@@ -48,38 +49,38 @@ namespace MyLib
 
             for (int i = 1; i <= Count; i++)
             {
-                foreach(int node in _adj[i])
+                foreach (Tuple<int, int> node in _adj[i])
                 {
-                    matrix[i - 1, node - 1] = 1;
+                    matrix[i - 1, node.Item1 - 1] = node.Item2;
                 }
             }
 
             return matrix;
         }
 
-        public LinkedList<int>[] GetAdjList()
+        public LinkedList<Tuple<int, int>>[] GetAdjList()
         {
-            LinkedList<int>[] ajdList = new LinkedList<int>[Count];
+            LinkedList<Tuple<int, int>>[] ajdList = new LinkedList<Tuple<int, int>>[Count];
             for (int i = 1; i <= Count; i++)
             {
-                ajdList[i-1] = new LinkedList<int>();
-                ajdList[i-1] = _adj[i];
+                ajdList[i - 1] = new LinkedList<Tuple<int, int>>();
+                ajdList[i - 1] = _adj[i];
             }
 
             return ajdList;
         }
 
-        public LinkedList<Edge> GetEdgeList()
+        public LinkedList<WeightedEdge> GetEdgeList()
         {
-            LinkedList<Edge> edges = new LinkedList<Edge>();
+            LinkedList<WeightedEdge> edges = new LinkedList<WeightedEdge>();
 
             for (int i = 1; i <= Count; i++)
             {
-                foreach (int node in _adj[i])
+                foreach (Tuple<int, int> node in _adj[i])
                 {
-                    if (node > i)
+                    if (node.Item1 > i)
                     {
-                        edges.AddLast(new Edge(i, node));
+                        edges.AddLast(new WeightedEdge(i, node.Item1, node.Item2));
                     }
                 }
             }
@@ -102,14 +103,14 @@ namespace MyLib
 
         public void PrintAdjList()
         {
-            LinkedList<int>[] list = GetAdjList();
+            LinkedList<Tuple<int, int>>[] list = GetAdjList();
 
             for (int i = 0; i < Count; i++)
             {
                 Console.Write($"{i + 1}: ");
-                foreach (int node in list[i])
+                foreach (Tuple<int, int> node in list[i])
                 {
-                    Console.Write($"{node} ");
+                    Console.Write($"({node.Item1}, {node.Item2}) ");
                 }
                 Console.WriteLine();
             }
@@ -117,14 +118,14 @@ namespace MyLib
 
         public void PrintEdgeList()
         {
-            LinkedList<Edge> edges = GetEdgeList();
+            LinkedList<WeightedEdge> edges = GetEdgeList();
             foreach (Edge edge in edges)
             {
                 Console.WriteLine(edge);
             }
         }
 
-        public static Graph LoadFromAdjacencyMatrixFile(string path)
+        public static WeightedGraph LoadFromAdjacencyMatrixFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -132,7 +133,7 @@ namespace MyLib
             }
             string[] lines = File.ReadAllLines(path);
 
-            Graph graph = new Graph();
+            WeightedGraph graph = new WeightedGraph();
             int nodes = int.Parse(lines[0]);
             graph.AddNodes(nodes);
 
@@ -141,9 +142,10 @@ namespace MyLib
                 string[] values = lines[i].Split();
                 for (int j = i; j < nodes; j++)
                 {
-                    if (int.Parse(values[j]) == 1)
+                    int w = int.Parse(values[j]);
+                    if (w != 0)
                     {
-                        graph.AddEdge(i, j+1);
+                        graph.AddEdge(i, j + 1, w);
                     }
                 }
             }
@@ -151,7 +153,7 @@ namespace MyLib
             return graph;
         }
 
-        public static Graph LoadFromAdjacencyListFile(string path)
+        public static WeightedGraph LoadFromEdgeListFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -159,40 +161,7 @@ namespace MyLib
             }
 
             string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
-
-            int nodes = int.Parse(lines[0]);
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= nodes; i++)
-            {
-                if (lines[i] == "")
-                {
-                    continue;
-                }
-
-                string[] values = lines[i].Split();
-                foreach(string v in values)
-                {
-                    int vv = int.Parse(v);
-                    if (vv > i)
-                    {
-                        graph.AddEdge(i, vv);
-                    }
-                }
-            }
-            return graph;
-        }
-
-        public static Graph LoadFromEdgeListFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-
-            string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
+            WeightedGraph graph = new WeightedGraph();
 
             string[] args = lines[0].Split();
             int nodes = int.Parse(args[0]);
@@ -205,7 +174,8 @@ namespace MyLib
                 string[] values = lines[i].Split();
                 int u = int.Parse(values[0]);
                 int v = int.Parse(values[1]);
-                graph.AddEdge(u, v);
+                int w = int.Parse(values[2]);
+                graph.AddEdge(u, v, w);
             }
 
             return graph;

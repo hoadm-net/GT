@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyLib
 {
-    public class wEdge: Edge
+    public class WeightedEdge: Edge
     {
         private int _w;
 
@@ -16,17 +16,17 @@ namespace MyLib
             set { _w = value; }
         }
 
-        public wEdge(): base()
+        public WeightedEdge(): base()
         {
             W = 0;
         }
 
-        public wEdge(int u, int v, int w): base(u, v)
+        public WeightedEdge(int u, int v, int w): base(u, v)
         {
             W = w;
         }
 
-        public wEdge(wEdge other): base(other.U, other.V)
+        public WeightedEdge(WeightedEdge other): base(other.U, other.V)
         {
             W = other.W;
         }

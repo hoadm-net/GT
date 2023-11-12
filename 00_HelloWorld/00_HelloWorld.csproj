@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\G_01.INP" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyLib\MyLib.csproj">

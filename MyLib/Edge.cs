@@ -52,8 +52,8 @@ namespace MyLib
 
         public Edge(Edge other)
         {
-            _u = other._u;
-            _v = other._v;
+            _u = other.U;
+            _v = other.V;
         }
 
         public override string ToString()

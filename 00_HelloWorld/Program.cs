@@ -11,18 +11,12 @@ namespace _00_HelloWorld
     {
         static void Main(string[] args)
         {
-            Graph g = new Graph();
-            g.AddNodes(new int[] { 0, 1, 2, 3});
-            g.AddEdge(new Edge(0, 1));
-            g.AddEdge(new Edge(0, 2));
-            g.AddEdge(new Edge(0, 3));
+            WeightedDirectedGraph g = WeightedDirectedGraph.LoadFromEdgeListFile("E:\\Code\\GT\\00_HelloWorld\\Data\\G_01.INP");
 
 
             g.PrintAdjMatrix();
-
             Console.WriteLine();
             g.PrintAdjList();
-
             Console.WriteLine();
             g.PrintEdgeList();
         }
