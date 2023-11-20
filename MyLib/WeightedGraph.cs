@@ -9,13 +9,65 @@ namespace MyLib
 {
     public class WeightedGraph
     {
-        private LinkedList<int> _nodes;
-        private Dictionary<int, LinkedList<Tuple<int, int>>> _adj;
+        protected string[] _args;
+        protected LinkedList<int> _nodes;
+        protected Dictionary<int, LinkedList<Tuple<int, int>>> _adj;
 
         public WeightedGraph()
         {
             _nodes = new LinkedList<int>();
             _adj = new Dictionary<int, LinkedList<Tuple<int, int>>>();
+        }
+
+        public WeightedGraph(string path, SourceType source_type)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+            string[] lines = File.ReadAllLines(path);
+            _args = lines[0].Split();
+            _nodes = new LinkedList<int>();
+            _adj = new Dictionary<int, LinkedList<Tuple<int, int>>>();
+
+            int nodes = int.Parse(_args[0]);
+            AddNodes(nodes);
+
+            if (source_type == SourceType.AdjMatrix)
+            {
+                for (int i = 1; i <= nodes; i++)
+                {
+                    string[] values = lines[i].Split();
+                    int j = i;
+                    if (Directed)
+                    {
+                        j = 0;
+                    }
+                    for (; j < nodes; j++)
+                    {
+                        int w = int.Parse(values[j]);
+                        if (w != 0)
+                        {
+                            AddEdge(i, j + 1, w);
+                        }
+                    }
+                }
+            } else if (source_type == SourceType.EdgeList)
+            {
+                int edges = int.Parse(_args[1]);
+
+                for (int i = 1; i <= edges; i++)
+                {
+                    string[] values = lines[i].Split();
+                    int u = int.Parse(values[0]);
+                    int v = int.Parse(values[1]);
+                    int w = int.Parse(values[2]);
+                    AddEdge(u, v, w);
+                }
+            } else
+            {
+                throw new ArgumentException("Source type is not valid!!!");
+            }
         }
 
         public LinkedList<int> Nodes
@@ -28,7 +80,9 @@ namespace MyLib
             get { return _nodes.Count; }
         }
 
-        public void AddNodes(int nodes)
+        protected virtual bool Directed { get { return false; } }
+
+        public virtual void AddNodes(int nodes)
         {
             for (int i = 1; i <= nodes; i++)
             {
@@ -39,8 +93,15 @@ namespace MyLib
 
         public void AddEdge(int u, int v, int w)
         {
-            _adj[u].AddLast(new Tuple<int, int>(v, w));
-            _adj[v].AddLast(new Tuple<int, int>(u, w));
+            if (Directed)
+            {
+                _adj[u].AddLast(new Tuple<int, int>(v, w));
+            }
+            else
+            {
+                _adj[u].AddLast(new Tuple<int, int>(v, w));
+                _adj[v].AddLast(new Tuple<int, int>(u, w));
+            }
         }
 
         public int[,] GetAdjMatrix()
@@ -78,10 +139,17 @@ namespace MyLib
             {
                 foreach (Tuple<int, int> node in _adj[i])
                 {
-                    if (node.Item1 > i)
+                    if (Directed)
                     {
                         edges.AddLast(new WeightedEdge(i, node.Item1, node.Item2));
+                    } else
+                    {
+                        if (node.Item1 > i)
+                        {
+                            edges.AddLast(new WeightedEdge(i, node.Item1, node.Item2));
+                        }
                     }
+                    
                 }
             }
 
@@ -99,6 +167,7 @@ namespace MyLib
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
 
         public void PrintAdjList()
@@ -114,6 +183,7 @@ namespace MyLib
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
 
         public void PrintEdgeList()
@@ -123,62 +193,7 @@ namespace MyLib
             {
                 Console.WriteLine(edge);
             }
-        }
-
-        public static WeightedGraph LoadFromAdjacencyMatrixFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-            string[] lines = File.ReadAllLines(path);
-
-            WeightedGraph graph = new WeightedGraph();
-            int nodes = int.Parse(lines[0]);
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= nodes; i++)
-            {
-                string[] values = lines[i].Split();
-                for (int j = i; j < nodes; j++)
-                {
-                    int w = int.Parse(values[j]);
-                    if (w != 0)
-                    {
-                        graph.AddEdge(i, j + 1, w);
-                    }
-                }
-            }
-
-            return graph;
-        }
-
-        public static WeightedGraph LoadFromEdgeListFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-
-            string[] lines = File.ReadAllLines(path);
-            WeightedGraph graph = new WeightedGraph();
-
-            string[] args = lines[0].Split();
-            int nodes = int.Parse(args[0]);
-            int edges = int.Parse(args[1]);
-
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= edges; i++)
-            {
-                string[] values = lines[i].Split();
-                int u = int.Parse(values[0]);
-                int v = int.Parse(values[1]);
-                int w = int.Parse(values[2]);
-                graph.AddEdge(u, v, w);
-            }
-
-            return graph;
+            Console.WriteLine();
         }
     }
 }

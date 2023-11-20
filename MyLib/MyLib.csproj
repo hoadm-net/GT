@@ -54,6 +54,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\DiGraphTest.cs" />
     <Compile Include="Test\GraphTest.cs" />
+    <Compile Include="Test\WeightedDirectedGraphTest.cs" />
+    <Compile Include="Test\WeightedGraphTest.cs" />
     <Compile Include="WeightedEdge.cs" />
     <Compile Include="WeightedDirectedGraph.cs" />
     <Compile Include="WeightedGraph.cs" />

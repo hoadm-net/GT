@@ -43,7 +43,12 @@ namespace MyLib
                 for (int i = 1; i <= nodes; i++)
                 {
                     string[] values = lines[i].Split();
-                    for (int j = i; j < nodes; j++)
+                    int j = i;
+                    if (Directed)
+                    {
+                        j = 0;
+                    }
+                    for (; j < nodes; j++)
                     {
                         if (int.Parse(values[j]) == 1)
                         {
@@ -64,10 +69,17 @@ namespace MyLib
                     foreach (string v in values)
                     {
                         int vv = int.Parse(v);
-                        if (vv > i)
+                        if (Directed)
                         {
                             AddEdge(i, vv);
+                        } else
+                        {
+                            if (vv > i)
+                            {
+                                AddEdge(i, vv);
+                            }
                         }
+                        
                     }
                 }
             } else if (stype == SourceType.EdgeList)
@@ -97,6 +109,8 @@ namespace MyLib
             get { return _nodes.Count; }
         }
 
+        protected virtual bool Directed { get { return false; } }
+
         public void AddNodes(int nodes)
         {
             for (int i = 1; i <= nodes; i++) {
@@ -107,8 +121,14 @@ namespace MyLib
 
         virtual public void AddEdge(int u, int v)
         {
-            _adj[u].AddLast(v);
-            _adj[v].AddLast(u);
+            if (Directed)
+            {
+                _adj[u].AddLast(v);
+            } else
+            {
+                _adj[u].AddLast(v);
+                _adj[v].AddLast(u);
+            }
         }
 
         public int[,] GetAdjMatrix()
@@ -146,9 +166,15 @@ namespace MyLib
             {
                 foreach (int node in _adj[i])
                 {
-                    if (node > i)
+                    if (Directed)
                     {
                         edges.AddLast(new Edge(i, node));
+                    } else
+                    {
+                        if (node > i)
+                        {
+                            edges.AddLast(new Edge(i, node));
+                        }
                     }
                 }
             }

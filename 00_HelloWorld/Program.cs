@@ -36,14 +36,15 @@ namespace _00_HelloWorld
             /* Directed Graph
               |--> 2 --> 3 --> 6
               |          |     ^
-              1          v     |
-              |--> 4 --> 5-----
+              1          |     |
+              ^          v     |
+              |-- 4 ---> 5-----
 
              */
             DirectedGraph diGraph = new DirectedGraph();
             diGraph.AddNodes(6);
             diGraph.AddEdge(1, 2);
-            diGraph.AddEdge(1, 4);
+            diGraph.AddEdge(4, 1);
             diGraph.AddEdge(2, 3);
             diGraph.AddEdge(3, 5);
             diGraph.AddEdge(3, 6);
@@ -55,12 +56,60 @@ namespace _00_HelloWorld
             diGraph.PrintEdgeList();
         }
         
+        public static void BuildWeightedGraph()
+        {
+            /*
+                Weighted Graph
+                
+                1--|25|--2
+                |        |
+               |10|     |13|
+                |        |
+                4--|17|--3
+             */
+            WeightedGraph wGraph = new WeightedGraph();
+            wGraph.AddNodes(4);
+            wGraph.AddEdge(1, 2, 25);
+            wGraph.AddEdge(1, 4, 10);
+            wGraph.AddEdge(2, 3, 13);
+            wGraph.AddEdge(3, 4, 17);
 
+            wGraph.PrintAdjMatrix();
+            wGraph.PrintAdjList();
+            wGraph.PrintEdgeList();
+        }
+
+        public static void BuildWeightedDirectedGraph()
+        {
+            /*
+                Weighted Graph
+                
+                1 --|25|-->2
+                ^          |
+                |          |
+               |10|       |13|
+                |          |
+                |          v
+                4<--|17|-- 3
+             */
+            WeightedDirectedGraph wdGraph = new WeightedDirectedGraph();
+            wdGraph.AddNodes(4);
+            wdGraph.AddEdge(1, 2, 25);
+            wdGraph.AddEdge(2, 3, 13);
+            wdGraph.AddEdge(3, 4, 17);
+            wdGraph.AddEdge(4, 1, 10);
+
+            wdGraph.PrintAdjMatrix();
+            wdGraph.PrintAdjList();
+            wdGraph.PrintEdgeList();
+        }
         static void Main(string[] args)
         {
             //BuildGraph();
             //BuidDirectedGraph();
-          
+            //BuildWeightedGraph();
+            BuildWeightedDirectedGraph();
+
         }
     }
 }

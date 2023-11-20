@@ -41,7 +41,7 @@ namespace MyLib.Test
             Assert.AreEqual(6, adjMatrix.GetLength(1));
 
             Assert.AreEqual(1, adjMatrix[0, 1]);
-            Assert.AreEqual(1, adjMatrix[0, 3]);
+            Assert.AreEqual(1, adjMatrix[3, 0]);
             Assert.AreEqual(1, adjMatrix[1, 2]);
             Assert.AreEqual(1, adjMatrix[2, 4]);
             Assert.AreEqual(1, adjMatrix[2, 5]);
@@ -66,10 +66,10 @@ namespace MyLib.Test
 
             // Adjacency List
             Assert.AreEqual(6, adjList.Length);
-            Assert.AreEqual(2, adjList[0].Count);
+            Assert.AreEqual(1, adjList[0].Count);
             Assert.AreEqual(1, adjList[1].Count);
             Assert.AreEqual(2, adjList[2].Count);
-            Assert.AreEqual(1, adjList[3].Count);
+            Assert.AreEqual(2, adjList[3].Count);
             Assert.AreEqual(1, adjList[4].Count);
             Assert.AreEqual(0, adjList[5].Count);
 
@@ -86,7 +86,7 @@ namespace MyLib.Test
             DirectedGraph g = new DirectedGraph();
             g.AddNodes(6);
             g.AddEdge(1, 2);
-            g.AddEdge(1, 4);
+            g.AddEdge(4, 1);
             g.AddEdge(2, 3);
             g.AddEdge(3, 5);
             g.AddEdge(3, 6);
