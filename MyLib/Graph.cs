@@ -5,16 +5,8 @@ using System.IO;
 
 namespace MyLib
 {
-    public enum SourceType
+    public class Graph : BaseGraph
     {
-        AdjMatrix,
-        AdjList,
-        EdgeList
-    }
-    public class Graph
-    {
-        protected string[] _args;
-        protected LinkedList<int> _nodes;
         protected Dictionary<int, LinkedList<int>> _adj;
 
         public Graph()
@@ -99,18 +91,6 @@ namespace MyLib
             }
         }
 
-        public LinkedList<int> Nodes
-        {
-            get { return _nodes; }
-        }
-
-        public int Count
-        {
-            get { return _nodes.Count; }
-        }
-
-        protected virtual bool Directed { get { return false; } }
-
         public void AddNodes(int nodes)
         {
             for (int i = 1; i <= nodes; i++) {
@@ -119,7 +99,7 @@ namespace MyLib
             }
         }
 
-        virtual public void AddEdge(int u, int v)
+        public void AddEdge(int u, int v)
         {
             if (Directed)
             {
@@ -182,7 +162,7 @@ namespace MyLib
             return edges;
         }
 
-        public void PrintAdjMatrix()
+        public override void PrintAdjMatrix()
         {
             int[,] matrix = GetAdjMatrix();
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -197,7 +177,7 @@ namespace MyLib
             Console.WriteLine();
         }
 
-        public void PrintAdjList()
+        public override void PrintAdjList()
         {
             LinkedList<int>[] list = GetAdjList();
 
@@ -214,7 +194,7 @@ namespace MyLib
             Console.WriteLine();
         }
 
-        public void PrintEdgeList()
+        public override void PrintEdgeList()
         {
             LinkedList<Edge> edges = GetEdgeList();
             foreach (Edge edge in edges)

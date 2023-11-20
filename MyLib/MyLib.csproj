@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseGraph.cs" />
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="Graph.cs" />

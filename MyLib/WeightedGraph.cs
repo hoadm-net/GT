@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MyLib
 {
-    public class WeightedGraph
+    public class WeightedGraph : BaseGraph
     {
-        protected string[] _args;
-        protected LinkedList<int> _nodes;
         protected Dictionary<int, LinkedList<Tuple<int, int>>> _adj;
 
         public WeightedGraph()
@@ -70,19 +66,7 @@ namespace MyLib
             }
         }
 
-        public LinkedList<int> Nodes
-        {
-            get { return _nodes; }
-        }
-
-        public int Count
-        {
-            get { return _nodes.Count; }
-        }
-
-        protected virtual bool Directed { get { return false; } }
-
-        public virtual void AddNodes(int nodes)
+        public void AddNodes(int nodes)
         {
             for (int i = 1; i <= nodes; i++)
             {
@@ -156,7 +140,7 @@ namespace MyLib
             return edges;
         }
 
-        public void PrintAdjMatrix()
+        public override void PrintAdjMatrix()
         {
             int[,] matrix = GetAdjMatrix();
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -170,7 +154,7 @@ namespace MyLib
             Console.WriteLine();
         }
 
-        public void PrintAdjList()
+        public override void PrintAdjList()
         {
             LinkedList<Tuple<int, int>>[] list = GetAdjList();
 
@@ -186,7 +170,7 @@ namespace MyLib
             Console.WriteLine();
         }
 
-        public void PrintEdgeList()
+        public override void PrintEdgeList()
         {
             LinkedList<WeightedEdge> edges = GetEdgeList();
             foreach (Edge edge in edges)
