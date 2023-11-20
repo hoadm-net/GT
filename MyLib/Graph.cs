@@ -1,21 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MyLib
 {
+    public enum SourceType
+    {
+        AdjMatrix,
+        AdjList,
+        EdgeList
+    }
     public class Graph
     {
-        private LinkedList<int> _nodes;
-        private Dictionary<int, LinkedList<int>> _adj;
+        protected string[] _args;
+        protected LinkedList<int> _nodes;
+        protected Dictionary<int, LinkedList<int>> _adj;
 
         public Graph()
         {
             _nodes = new LinkedList<int>();
             _adj = new Dictionary<int, LinkedList<int>>();
+        }
+
+        public Graph(string path, SourceType stype)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+
+            string[] lines = File.ReadAllLines(path);
+            _args = lines[0].Split();
+            _nodes = new LinkedList<int>();
+            _adj = new Dictionary<int, LinkedList<int>>();
+
+            int nodes = int.Parse(_args[0]);
+            AddNodes(nodes);
+
+            if (stype == SourceType.AdjMatrix)
+            {
+                for (int i = 1; i <= nodes; i++)
+                {
+                    string[] values = lines[i].Split();
+                    for (int j = i; j < nodes; j++)
+                    {
+                        if (int.Parse(values[j]) == 1)
+                        {
+                            AddEdge(i, j + 1);
+                        }
+                    }
+                }
+            } else if (stype == SourceType.AdjList)
+            {
+                for (int i = 1; i <= nodes; i++)
+                {
+                    if (lines[i] == "")
+                    {
+                        continue;
+                    }
+
+                    string[] values = lines[i].Split();
+                    foreach (string v in values)
+                    {
+                        int vv = int.Parse(v);
+                        if (vv > i)
+                        {
+                            AddEdge(i, vv);
+                        }
+                    }
+                }
+            } else if (stype == SourceType.EdgeList)
+            {
+                int edges = int.Parse(_args[1]);
+
+                for (int i = 1; i <= edges; i++)
+                {
+                    string[] values = lines[i].Split();
+                    int u = int.Parse(values[0]);
+                    int v = int.Parse(values[1]);
+                    AddEdge(u, v);
+                }
+            } else
+            {
+                throw new ArgumentException("Source type is not valid!!!");
+            }
         }
 
         public LinkedList<int> Nodes
@@ -36,7 +105,7 @@ namespace MyLib
             }
         }
 
-        public void AddEdge(int u, int v)
+        virtual public void AddEdge(int u, int v)
         {
             _adj[u].AddLast(v);
             _adj[v].AddLast(u);
@@ -98,6 +167,8 @@ namespace MyLib
                 }
                 Console.WriteLine();
             }
+
+            Console.WriteLine();
         }
 
         public void PrintAdjList()
@@ -113,6 +184,8 @@ namespace MyLib
                 }
                 Console.WriteLine();
             }
+
+            Console.WriteLine();
         }
 
         public void PrintEdgeList()
@@ -122,93 +195,7 @@ namespace MyLib
             {
                 Console.WriteLine(edge);
             }
-        }
-
-        public static Graph LoadFromAdjacencyMatrixFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-            string[] lines = File.ReadAllLines(path);
-
-            Graph graph = new Graph();
-            int nodes = int.Parse(lines[0]);
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= nodes; i++)
-            {
-                string[] values = lines[i].Split();
-                for (int j = i; j < nodes; j++)
-                {
-                    if (int.Parse(values[j]) == 1)
-                    {
-                        graph.AddEdge(i, j+1);
-                    }
-                }
-            }
-
-            return graph;
-        }
-
-        public static Graph LoadFromAdjacencyListFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-
-            string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
-
-            int nodes = int.Parse(lines[0]);
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= nodes; i++)
-            {
-                if (lines[i] == "")
-                {
-                    continue;
-                }
-
-                string[] values = lines[i].Split();
-                foreach(string v in values)
-                {
-                    int vv = int.Parse(v);
-                    if (vv > i)
-                    {
-                        graph.AddEdge(i, vv);
-                    }
-                }
-            }
-            return graph;
-        }
-
-        public static Graph LoadFromEdgeListFile(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
-
-            string[] lines = File.ReadAllLines(path);
-            Graph graph = new Graph();
-
-            string[] args = lines[0].Split();
-            int nodes = int.Parse(args[0]);
-            int edges = int.Parse(args[1]);
-
-            graph.AddNodes(nodes);
-
-            for (int i = 1; i <= edges; i++)
-            {
-                string[] values = lines[i].Split();
-                int u = int.Parse(values[0]);
-                int v = int.Parse(values[1]);
-                graph.AddEdge(u, v);
-            }
-
-            return graph;
+            Console.WriteLine();
         }
     }
 }

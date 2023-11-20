@@ -51,15 +51,27 @@
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="Graph.cs" />
-    <Compile Include="Test\GraphTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\DiGraphTest.cs" />
+    <Compile Include="Test\GraphTest.cs" />
     <Compile Include="WeightedEdge.cs" />
     <Compile Include="WeightedDirectedGraph.cs" />
     <Compile Include="WeightedGraph.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Test\Data\DGraph_AdjList.INP" />
+    <None Include="Test\Data\DGraph_AdjMatrix.INP" />
+    <None Include="Test\Data\DGraph_EdgeList.INP" />
+    <None Include="Test\Data\Graph_AdjList.INP" />
+    <None Include="Test\Data\Graph_AdjMatrix.INP" />
+    <None Include="Test\Data\Graph_EdgeList.INP" />
+    <None Include="Test\Data\WDGraph_AdjMatrix.INP" />
+    <None Include="Test\Data\WDGraph_EdgeList.INP" />
+    <None Include="Test\Data\WGraph_AdjMatrix.INP" />
+    <None Include="Test\Data\WGraph_EdgeList.INP" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
