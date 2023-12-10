@@ -11,7 +11,7 @@ namespace MyLib.Test
     [TestFixture]
     internal class WeightedGraphTest
     {
-        string dataDir = "D:\\Code\\GT\\MyLib\\Test\\Data\\";
+        string dataDir = "E:\\Code\\GT\\MyLib\\Test\\Data\\";
         string adjMatrix = "";
         string edgeList = "";
 

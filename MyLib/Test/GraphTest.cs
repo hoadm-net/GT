@@ -15,7 +15,7 @@ namespace MyLib.Test
     [TestFixture]
     internal class GraphTest
     {
-        string dataDir = "D:\\Code\\GT\\MyLib\\Test\\Data\\";
+        string dataDir = "E:\\Code\\GT\\MyLib\\Test\\Data\\";
         string adjMatrix = "";
         string adjList = "";
         string edgeList = "";

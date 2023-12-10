@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 
 namespace MyLib
 {
@@ -71,7 +71,7 @@ namespace MyLib
                                 AddEdge(i, vv);
                             }
                         }
-                        
+
                     }
                 }
             } else if (stype == SourceType.EdgeList)
@@ -117,7 +117,7 @@ namespace MyLib
 
             for (int i = 1; i <= Count; i++)
             {
-                foreach(int node in _adj[i])
+                foreach (int node in _adj[i])
                 {
                     matrix[i - 1, node - 1] = 1;
                 }
@@ -131,8 +131,8 @@ namespace MyLib
             LinkedList<int>[] ajdList = new LinkedList<int>[Count];
             for (int i = 1; i <= Count; i++)
             {
-                ajdList[i-1] = new LinkedList<int>();
-                ajdList[i-1] = _adj[i];
+                ajdList[i - 1] = new LinkedList<int>();
+                ajdList[i - 1] = _adj[i];
             }
 
             return ajdList;
@@ -202,6 +202,40 @@ namespace MyLib
                 Console.WriteLine(edge);
             }
             Console.WriteLine();
+        }
+
+        public LinkedList<int> GetNeighbors(int u)
+        {
+            if (u < 0 || u > Count)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return _adj[u];
+        }
+
+        public static void PrintPath(int s, int t, int[] pre)
+        {
+            if (pre[t - 1] == 0)
+            {
+                Console.WriteLine($"There is no path from {s} to {t}");
+                return;
+            }
+            Stack<int> stack = new Stack<int>();
+            int u = t;
+
+            while (u != 0)
+            {
+                stack.Push(u);
+                u = pre[u - 1];
+            }
+
+            while (stack.Count > 0)
+            {
+                Console.Write($"{stack.Pop()} -> ");
+            }
+
+            Console.WriteLine("|");
         }
     }
 }
