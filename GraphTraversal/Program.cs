@@ -36,7 +36,7 @@ namespace GraphTraversal
             //BuildGraph();
             MyGraph g = new MyGraph("E:\\Code\\GT\\GraphTraversal\\Data\\AdjMatrix.INP", SourceType.AdjMatrix);
 
-            g.BFS(1, 5);
+            g.DFS(1);
         }
     }
 }

@@ -66,5 +66,60 @@ namespace GraphTraversal
 
             MyGraph.PrintPath(s, t, pre);
         }
+
+
+        public void DFS(int s)
+        {
+            bool[] visited = new bool[Count];
+            int[] pre = new int[Count];
+            Stack<int> stack = new Stack<int>();
+
+            stack.Push(s);
+
+            while (stack.Count > 0)
+            {
+                int u = stack.Pop();
+                if (!visited[u - 1])
+                {
+                    visited[u - 1] = true;
+                    Console.Write($"{u} -> ");
+
+                    foreach (int v in GetNeighbors(u))
+                    {
+                        if (!visited[v - 1])
+                        {
+                            stack.Push(v);
+                            pre[v - 1] = u;
+                        }
+                        
+                    }
+                }
+            }
+
+            Console.WriteLine("|stop|");
+        }
+
+
+        public void Visit(bool[] visited, int u)
+        {
+            if (visited[u - 1])
+            {
+                return;
+            }
+
+            visited[u - 1] = true;
+            Console.Write($"{u} -> ");
+
+            foreach (int v in GetNeighbors(u))
+            {
+                Visit(visited, v);
+            }
+        }
+
+        public void DFS_R(int s)
+        {
+            bool[] visited = new bool[Count];
+            Visit(visited, s);
+        }
     }
 }

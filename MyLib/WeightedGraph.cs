@@ -179,5 +179,16 @@ namespace MyLib
             }
             Console.WriteLine();
         }
+
+
+        public LinkedList<Tuple<int, int>> GetNeighbors(int u)
+        {
+            if (u < 0 || u > Count)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return _adj[u];
+        }
     }
 }
