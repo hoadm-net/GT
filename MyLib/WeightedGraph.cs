@@ -147,7 +147,7 @@ namespace MyLib
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write($"{matrix[i, j]} ");
+                    Console.Write($"{matrix[i, j], 3} ");
                 }
                 Console.WriteLine();
             }
@@ -163,7 +163,7 @@ namespace MyLib
                 Console.Write($"{i + 1}: ");
                 foreach (Tuple<int, int> node in list[i])
                 {
-                    Console.Write($"({node.Item1}, {node.Item2}) ");
+                    Console.Write($"({node.Item1, 2}, {node.Item2, 2}) ");
                 }
                 Console.WriteLine();
             }

@@ -29,12 +29,14 @@ namespace GraphTraversal
                 int u = queue.Dequeue();
                 foreach(int v in GetNeighbors(u))
                 {
-                    if (visited[v - 1] == false)
+                    if (visited[v - 1])
                     {
-                        Console.Write($"{v} -> ");
-                        visited[v - 1] = true;
-                        queue.Enqueue(v);
+                        continue;
                     }
+
+                    Console.Write($"{v} -> ");
+                    visited[v - 1] = true;
+                    queue.Enqueue(v);
                 }
             }
 
@@ -55,12 +57,14 @@ namespace GraphTraversal
                 int u = queue.Dequeue();
                 foreach (int v in GetNeighbors(u))
                 {
-                    if (visited[v - 1] == false)
+                    if (visited[v - 1])
                     {
-                        visited[v - 1] = true;
-                        pre[v - 1] = u;
-                        queue.Enqueue(v);
+                        continue;
                     }
+
+                    visited[v - 1] = true;
+                    pre[v - 1] = u;
+                    queue.Enqueue(v);
                 }
             }
 
@@ -84,7 +88,7 @@ namespace GraphTraversal
                     visited[u - 1] = true;
                     Console.Write($"{u} -> ");
 
-                    foreach (int v in GetNeighbors(u))
+                    foreach (int v in GetNeighbors(u).Reverse())
                     {
                         if (!visited[v - 1])
                         {
