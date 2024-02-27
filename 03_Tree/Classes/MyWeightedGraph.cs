@@ -85,18 +85,12 @@ namespace _03_Tree.Classes
                     if (
                         msTree.Contains(e) || 
                         (msTreeNodes.Contains(e.U) && msTreeNodes.Contains(e.V))
-                    ) // e already in msTree
-                    {
-                        continue;
-                    }
-
-
-                    if (msTreeNodes.Contains(e.U) || msTreeNodes.Contains(e.V))
-                    {
+                    )  continue;
+                    
+                    if (msTreeNodes.Contains(e.U) || msTreeNodes.Contains(e.V)) {
                         queue.Enqueue(e, e.W);
                     }
                 }
-
 
                 WeightedEdge be = queue.Dequeue();
                 int newVertex = msTreeNodes.Contains(be.U) ? be.V : be.U;
