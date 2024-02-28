@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,14 @@ namespace MyLib
         public static string GetDist(int dist) 
         {
             return dist == int.MaxValue ? "INF" : dist.ToString();
+        }
+
+
+        public static string GetDataPath(string fileName)
+        {
+            string builDir = Directory.GetCurrentDirectory();
+            string prjDir = Directory.GetParent(builDir).Parent.Parent.FullName;
+            return Path.Combine(prjDir, "Data", fileName);
         }
     }
 }

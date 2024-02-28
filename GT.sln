@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLib", "MyLib\MyLib.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01_GraphTraversal", "GraphTraversal\01_GraphTraversal.csproj", "{F0CD318C-24E7-4F02-964F-EBC3782345FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02_ShortestPath", "02_ShortestPath\02_ShortestPath.csproj", "{5346F341-702B-49A7-8829-BD9FAF5F63AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02_ShortestPaths", "02_ShortestPath\02_ShortestPaths.csproj", "{5346F341-702B-49A7-8829-BD9FAF5F63AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03_Tree", "03_Tree\03_Tree.csproj", "{5C449667-8065-4D3C-B5F0-13F3A6DAF209}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03_SpanningTrees", "03_Tree\03_SpanningTrees.csproj", "{5C449667-8065-4D3C-B5F0-13F3A6DAF209}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_Cycle", "04_Cycle\04_Cycle.csproj", "{14C4CDDA-5E29-4D65-B9C3-9B9D67E96CC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04_Circuits", "04_Cycle\04_Circuits.csproj", "{14C4CDDA-5E29-4D65-B9C3-9B9D67E96CC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
